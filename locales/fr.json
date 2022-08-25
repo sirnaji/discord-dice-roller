@@ -1,0 +1,24 @@
+{
+    "translations": {
+        "commands": {
+            "roll": {
+                "name": "roll",
+                "description": "roll dice",
+                "dictionary": {
+                    "dice": "dice",
+                    "die": "die"
+                },
+                "rollDetails": {
+                    "rollingMultipleDice": "rolling {} {}-sided dice",
+                    "rollingSingleDie": "rolling a {}-sided die"
+                },
+                "threshold": {
+                    "criticalFailure": "critical failure",
+                    "criticalSuccess": "critical success",
+                    "failure": "failure",
+                    "success": "success"
+                }
+            }
+        }
+    }
+}
