@@ -19,7 +19,11 @@ pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale> {
     println!("Loading locale files...");
 
     if files.is_empty() {
-        panic!("No locale found. Please add at least one locale file.")
+        println!(
+            "{} No locale files found. The bot needs at least one locale file to load.",
+            "ERROR ".bright_red()
+        );
+        process::exit(1);
     }
 
     for file in files {
