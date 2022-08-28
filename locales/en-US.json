@@ -1,4 +1,9 @@
 {
+    "infos": {
+        "name": "English, US",
+        "native_name": "English, US",
+        "flag_emoji": ":flag_us:"
+    },
     "translations": {
         "commands": {
             "roll": {

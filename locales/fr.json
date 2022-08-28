@@ -1,4 +1,9 @@
 {
+    "infos": {
+        "name": "French",
+        "native_name": "Français",
+        "flag_emoji": ":flag_fr:"
+    },
     "translations": {
         "commands": {
             "roll": {
