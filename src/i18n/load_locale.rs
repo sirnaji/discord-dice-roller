@@ -5,9 +5,9 @@ use std::io::BufReader;
 use std::path::PathBuf;
 use std::process;
 
-use crate::i18n::language;
+use crate::i18n::supported_language;
 
-use super::language::DiscordSupportedLanguage;
+use super::supported_language::DiscordSupportedLanguage;
 use super::locale::Locale;
 
 pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale> {
@@ -32,7 +32,7 @@ pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale> {
         if let Some(locale) = json {
             let file_name = file.file_stem().unwrap().to_str().unwrap();
 
-            if let Some(lang_code) = language::try_get_lang_code(file_name) {
+            if let Some(lang_code) = supported_language::try_get_lang_code(file_name) {
                 println!("Loaded {}", format!("{}.json", file_name).yellow());
                 locales.insert(lang_code, locale);
             } else {

@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 
-pub mod language;
+pub mod supported_language;
 pub mod load_locale;
 pub mod locale;
 
-use language::DiscordSupportedLanguage;
+use supported_language::DiscordSupportedLanguage;
 use locale::Locale;
 
-pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale> {
+pub fn get_locales() -> HashMap<DiscordSupportedLanguage, Locale> {
     load_locale::load_locales()
 }
