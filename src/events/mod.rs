@@ -1,11 +1,15 @@
+use crate::utils::i18n;
 use serenity::async_trait;
 use serenity::model::prelude::interaction::Interaction;
 use serenity::model::prelude::Ready;
 use serenity::prelude::*;
+use std::collections::HashMap;
 mod interaction_create;
 mod ready;
 
-pub struct Handler;
+pub struct Handler {
+    pub locales: HashMap<i18n::supported_language::DiscordSupportedLanguage, i18n::locale::Locale>,
+}
 
 #[async_trait]
 impl EventHandler for Handler {
