@@ -5,7 +5,7 @@ use std::io::BufReader;
 use std::path::PathBuf;
 use std::process;
 
-use crate::i18n::supported_language;
+use crate::utils::i18n::supported_language;
 
 use super::supported_language::DiscordSupportedLanguage;
 use super::locale::Locale;
