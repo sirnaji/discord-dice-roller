@@ -6,7 +6,7 @@ use serenity::prelude::*;
 
 impl Handler {
     pub async fn on_ready(&self, ctx: Context, ready: Ready) {
-        println!("{} is now online.", ready.user.name.to_string().yellow());
+        println!("{} is now online.", ready.user.name.yellow());
 
         // Register the roll shash command to the Discord API.
         let _ = roll::register(&ctx);

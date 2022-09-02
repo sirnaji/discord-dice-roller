@@ -7,9 +7,9 @@ pub enum DiscordSupportedLanguage {
     DA,
     DE,
     EL,
-    ESES,
-    ENGB,
-    ENUS,
+    EsEs,
+    EnGb,
+    EnUs,
     FI,
     FR,
     HI,
@@ -22,38 +22,38 @@ pub enum DiscordSupportedLanguage {
     NL,
     NO,
     PL,
-    PTBR,
+    PtBr,
     RO,
     RU,
-    SVSE,
+    SvSe,
     TH,
     TR,
     UK,
     VI,
-    ZHCN,
-    ZHTW,
+    ZhCn,
+    ZhTw,
 }
 
 impl DiscordSupportedLanguage {
     pub fn iter() -> impl Iterator<Item = DiscordSupportedLanguage> {
         [
-            BG, CS, DA, DE, EL, ESES, ENGB, ENUS, FI, FR, HI, HR, HU, IT, JA, KO, LT, NL, NO, PL,
-            PTBR, RO, RU, SVSE, TH, TR, UK, VI, ZHCN, ZHTW,
+            BG, CS, DA, DE, EL, EsEs, EnGb, EnUs, FI, FR, HI, HR, HU, IT, JA, KO, LT, NL, NO, PL,
+            PtBr, RO, RU, SvSe, TH, TR, UK, VI, ZhCn, ZhTw,
         ]
         .iter()
         .copied()
     }
 
-    pub fn to_str(&self) -> &str {
+    pub fn to_str(self) -> &'static str {
         match self {
             Self::BG => "bg",
             Self::CS => "cs",
             Self::DA => "da",
             Self::DE => "de",
             Self::EL => "el",
-            Self::ESES => "es-ES",
-            Self::ENGB => "en-GB",
-            Self::ENUS => "en-US",
+            Self::EsEs => "es-ES",
+            Self::EnGb => "en-GB",
+            Self::EnUs => "en-US",
             Self::FI => "fi",
             Self::FR => "fr",
             Self::HI => "hi",
@@ -66,16 +66,16 @@ impl DiscordSupportedLanguage {
             Self::NL => "nl",
             Self::NO => "no",
             Self::PL => "pl",
-            Self::PTBR => "pt-BR",
+            Self::PtBr => "pt-BR",
             Self::RO => "ro",
             Self::RU => "ru",
-            Self::SVSE => "sv-SE",
+            Self::SvSe => "sv-SE",
             Self::TH => "th",
             Self::TR => "tr",
             Self::UK => "uk",
             Self::VI => "vi",
-            Self::ZHCN => "zh-CN",
-            Self::ZHTW => "zh-TW",
+            Self::ZhCn => "zh-CN",
+            Self::ZhTw => "zh-TW",
         }
     }
 }
