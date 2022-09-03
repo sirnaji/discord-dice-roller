@@ -1,7 +1,8 @@
 use regex::Regex;
 use std::fmt;
 
-pub enum ParseError {
+pub enum ParseError
+{
     DiceAmount,
     Threshold,
     DiceSize,
@@ -9,9 +10,12 @@ pub enum ParseError {
     Input,
 }
 
-impl fmt::Debug for ParseError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
+impl fmt::Debug for ParseError
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
+    {
+        match self
+        {
             ParseError::DiceAmount => write!(f, "Invalid dice amount"),
             ParseError::Threshold => write!(f, "Invalid threshold"),
             ParseError::DiceSize => write!(f, "Invalid dice size"),
@@ -22,7 +26,8 @@ impl fmt::Debug for ParseError {
 }
 
 #[derive(Debug)]
-pub struct ParsedRoll {
+pub struct ParsedRoll
+{
     pub dice_amount: Option<u8>,
     pub dice_size: Option<u8>,
     pub threshold: Option<u8>,
@@ -30,18 +35,21 @@ pub struct ParsedRoll {
 }
 
 #[derive(Debug)]
-pub struct TresholdModifier {
+pub struct TresholdModifier
+{
     pub is_positive: bool,
     pub value: u8,
 }
 
-pub fn parse_input(input: &str) -> Result<ParsedRoll, ParseError> {
+pub fn parse_input(input: &str) -> Result<ParsedRoll, ParseError>
+{
     let input_validator = Regex::new(r"((?P<dice_amount>\d*)?[dD](?P<dice_size>\d+)?)?(?P<threshold>([<](?P<threshold_value>\d+))(?P<modifier>(?P<modifier_sign>[+-])(?P<modifier_value>\d+))?)?").unwrap();
 
     let captures = input_validator.captures(input).ok_or(ParseError::Input)?;
 
     let dice_amount = {
-        if captures.name("dice_amount").is_some() {
+        if captures.name("dice_amount").is_some()
+        {
             let amount = captures
                 .name("dice_amount")
                 .ok_or(ParseError::Input)?
@@ -49,17 +57,21 @@ pub fn parse_input(input: &str) -> Result<ParsedRoll, ParseError> {
                 .parse::<u8>()
                 .map_err(|_| ParseError::DiceAmount);
 
-            match amount {
+            match amount
+            {
                 Ok(amount) => Some(amount),
                 Err(_) => None,
             }
-        } else {
+        }
+        else
+        {
             Some(1)
         }
     };
 
     let dice_size = {
-        if captures.name("dice_size").is_some() {
+        if captures.name("dice_size").is_some()
+        {
             let size = captures
                 .name("dice_size")
                 .ok_or(ParseError::Input)?
@@ -67,17 +79,21 @@ pub fn parse_input(input: &str) -> Result<ParsedRoll, ParseError> {
                 .parse::<u8>()
                 .map_err(|_| ParseError::DiceSize);
 
-            match size {
+            match size
+            {
                 Ok(size) => Some(size),
                 Err(_) => None,
             }
-        } else {
+        }
+        else
+        {
             Some(20)
         }
     };
 
     let threshold = {
-        if captures.name("threshold").is_some() {
+        if captures.name("threshold").is_some()
+        {
             let threshold = captures
                 .name("threshold_value")
                 .ok_or(ParseError::Input)?
@@ -85,17 +101,21 @@ pub fn parse_input(input: &str) -> Result<ParsedRoll, ParseError> {
                 .parse::<u8>()
                 .map_err(|_| ParseError::Threshold);
 
-            match threshold {
+            match threshold
+            {
                 Ok(threshold) => Some(threshold),
                 Err(_) => None,
             }
-        } else {
+        }
+        else
+        {
             None
         }
     };
 
     let threshold_modifier = {
-        if captures.name("modifier").is_some() {
+        if captures.name("modifier").is_some()
+        {
             let modifier_sign = captures
                 .name("modifier_sign")
                 .ok_or(ParseError::Input)?
@@ -114,7 +134,9 @@ pub fn parse_input(input: &str) -> Result<ParsedRoll, ParseError> {
             let value = modifier_value;
 
             Some(TresholdModifier { is_positive, value })
-        } else {
+        }
+        else
+        {
             None
         }
     };

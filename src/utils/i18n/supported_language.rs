@@ -1,7 +1,8 @@
 use self::DiscordSupportedLanguage::*;
 
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
-pub enum DiscordSupportedLanguage {
+pub enum DiscordSupportedLanguage
+{
     BG,
     CS,
     DA,
@@ -34,8 +35,10 @@ pub enum DiscordSupportedLanguage {
     ZhTw,
 }
 
-impl DiscordSupportedLanguage {
-    pub fn iter() -> impl Iterator<Item = DiscordSupportedLanguage> {
+impl DiscordSupportedLanguage
+{
+    pub fn iter() -> impl Iterator<Item = DiscordSupportedLanguage>
+    {
         [
             BG, CS, DA, DE, EL, EsEs, EnGb, EnUs, FI, FR, HI, HR, HU, IT, JA, KO, LT, NL, NO, PL,
             PtBr, RO, RU, SvSe, TH, TR, UK, VI, ZhCn, ZhTw,
@@ -44,8 +47,10 @@ impl DiscordSupportedLanguage {
         .copied()
     }
 
-    pub fn to_str(self) -> &'static str {
-        match self {
+    pub fn to_str(self) -> &'static str
+    {
+        match self
+        {
             Self::BG => "bg",
             Self::CS => "cs",
             Self::DA => "da",
@@ -80,9 +85,12 @@ impl DiscordSupportedLanguage {
     }
 }
 
-pub fn try_get_lang_code(expected_lang_code: &str) -> Option<DiscordSupportedLanguage> {
-    for lang_code in DiscordSupportedLanguage::iter() {
-        if lang_code.to_str() == expected_lang_code {
+pub fn try_get_lang_code(expected_lang_code: &str) -> Option<DiscordSupportedLanguage>
+{
+    for lang_code in DiscordSupportedLanguage::iter()
+    {
+        if lang_code.to_str() == expected_lang_code
+        {
             return Some(lang_code);
         }
     }

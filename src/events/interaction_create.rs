@@ -5,14 +5,19 @@ use serenity::builder::CreateEmbed;
 use serenity::model::prelude::interaction::{Interaction, InteractionResponseType};
 use serenity::prelude::*;
 
-impl Handler {
-    pub async fn on_interaction_create(&self, ctx: Context, interaction: Interaction) {
-        if let Interaction::ApplicationCommand(command) = interaction {
-            let content: CreateEmbed = match command.data.name.as_str() {
+impl Handler
+{
+    pub async fn on_interaction_create(&self, ctx: Context, interaction: Interaction)
+    {
+        if let Interaction::ApplicationCommand(command) = interaction
+        {
+            let content: CreateEmbed = match command.data.name.as_str()
+            {
                 "roll" => roll::handler(&command),
                 // In case other slash commands are added later
                 // but have yet to be implemented.
-                _ => {
+                _ =>
+                {
                     let embed = CreateEmbed::default()
                         .title("Roll")
                         .description("This command have yet to be implemented.")

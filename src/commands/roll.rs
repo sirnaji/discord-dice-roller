@@ -11,7 +11,8 @@ use serenity::{
 };
 use std::fmt::Write as _;
 
-pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed {
+pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed
+{
     let options = command
         .data
         .options
@@ -21,11 +22,14 @@ pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed {
         .as_ref()
         .expect("Expected roll input.");
 
-    if let CommandDataOptionValue::String(value) = options {
+    if let CommandDataOptionValue::String(value) = options
+    {
         let rolls = roller::new(value);
 
-        match rolls {
-            Ok(rolls) => {
+        match rolls
+        {
+            Ok(rolls) =>
+            {
                 let roll_command = rolls.roll_command;
 
                 let rolls_threshold = roll_command.threshold;
@@ -38,22 +42,29 @@ pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed {
                     .color(EmbedColor::ActionBase as u32)
                     .to_owned();
 
-                match dice_amount {
-                    Some(1) => {
+                match dice_amount
+                {
+                    Some(1) =>
+                    {
                         let roll: Roll = rolls_values[0];
 
                         let roll_value_string = {
-                            if roll.value < 10 {
+                            if roll.value < 10
+                            {
                                 format!("0{}", roll.value)
-                            } else {
+                            }
+                            else
+                            {
                                 format!("{}", roll.value)
                             }
                         };
 
                         embed.color(roll.threshold.get_color());
 
-                        match rolls_threshold {
-                            Some(threshold) => {
+                        match rolls_threshold
+                        {
+                            Some(threshold) =>
+                            {
                                 embed.field(
                                     format!("{:?}", roll.threshold).to_uppercase(),
                                     format!(
@@ -67,7 +78,8 @@ pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed {
                                 );
                             }
 
-                            None => {
+                            None =>
+                            {
                                 embed.field("ROLL RESULT:", roll_value_string, false);
                             }
                         }
@@ -75,30 +87,40 @@ pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed {
                         embed.description(format!("Rolling an {:?}-sided die", dice_size.unwrap()));
                     }
 
-                    _ => {
+                    _ =>
+                    {
                         let mut success_counter: u8 = 0;
                         let mut rolls_string = String::new();
                         let mut roll_index: u8 = 1;
 
-                        for roll in rolls_values {
+                        for roll in rolls_values
+                        {
                             let roll_index_string = {
-                                if roll_index < 10 {
+                                if roll_index < 10
+                                {
                                     format!("0{}", roll_index)
-                                } else {
+                                }
+                                else
+                                {
                                     format!("{}", roll_index)
                                 }
                             };
 
                             let roll_value_string = {
-                                if roll.value < 10 {
+                                if roll.value < 10
+                                {
                                     format!("0{}", roll.value)
-                                } else {
+                                }
+                                else
+                                {
                                     format!("{}", roll.value)
                                 }
                             };
 
-                            match roll.threshold {
-                                Threshold::None => {
+                            match roll.threshold
+                            {
+                                Threshold::None =>
+                                {
                                     let _ = writeln!(
                                         rolls_string,
                                         "`DIE {}` :⠀⠀⠀**{}**",
@@ -106,7 +128,8 @@ pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed {
                                     );
                                 }
 
-                                _ => {
+                                _ =>
+                                {
                                     let roll_threshold_string = rolls.threshold_value.unwrap();
 
                                     let _ = writeln!(
@@ -131,7 +154,8 @@ pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed {
                             roll_index += 1;
                         }
 
-                        if roll_command.threshold.is_some() {
+                        if roll_command.threshold.is_some()
+                        {
                             embed.footer(|f| {
                                 f.text(format!(
                                     "{}/{:?} succesful rolls",
@@ -153,7 +177,8 @@ pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed {
                 embed
             }
 
-            Err(error) => {
+            Err(error) =>
+            {
                 println!("Error: {:?}", error);
 
                 let embed = CreateEmbed::default()
@@ -165,7 +190,9 @@ pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed {
                 embed
             }
         }
-    } else {
+    }
+    else
+    {
         let embed = CreateEmbed::default()
         .title("Roll")
         .description("Command input is missing. Type /help for more information about how to use this command.")
@@ -177,7 +204,8 @@ pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed {
 }
 
 // Used to register the slash command on Discord's API
-pub async fn register(ctx: &Context) -> Result<Command, Error> {
+pub async fn register(ctx: &Context) -> Result<Command, Error>
+{
     Command::create_global_application_command(&ctx.http, |command| {
         command
             .name("roll")

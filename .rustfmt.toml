@@ -1,0 +1,3 @@
+brace_style = "AlwaysNextLine"
+control_brace_style = "AlwaysNextLine"
+enum_discrim_align_threshold = 90

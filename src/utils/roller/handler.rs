@@ -2,7 +2,8 @@ use super::parser;
 use super::random;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub enum Threshold {
+pub enum Threshold
+{
     CriticalSuccess,
     CriticalFailure,
     Success,
@@ -10,9 +11,12 @@ pub enum Threshold {
     None,
 }
 
-impl Threshold {
-    pub fn get_color_emoji(&self) -> String {
-        match self {
+impl Threshold
+{
+    pub fn get_color_emoji(&self) -> String
+    {
+        match self
+        {
             Threshold::CriticalSuccess => ":blue_circle:".to_string(),
             Threshold::CriticalFailure => ":purple_circle:".to_string(),
             Threshold::Success => ":green_circle:".to_string(),
@@ -21,8 +25,10 @@ impl Threshold {
         }
     }
 
-    pub fn get_emote_emoji(&self) -> String {
-        match self {
+    pub fn get_emote_emoji(&self) -> String
+    {
+        match self
+        {
             Threshold::CriticalSuccess => ":heart_eyes:".to_string(),
             Threshold::CriticalFailure => ":scream:".to_string(),
             Threshold::Success => ":innocent:".to_string(),
@@ -31,8 +37,10 @@ impl Threshold {
         }
     }
 
-    pub fn get_text(&self) -> String {
-        match self {
+    pub fn get_text(&self) -> String
+    {
+        match self
+        {
             Threshold::CriticalSuccess => "CRITICAL HIT!".to_string(),
             Threshold::CriticalFailure => "CRITICAL FAILURE!".to_string(),
             Threshold::Success => "Success".to_string(),
@@ -41,8 +49,10 @@ impl Threshold {
         }
     }
 
-    pub fn get_color(&self) -> u32 {
-        match self {
+    pub fn get_color(&self) -> u32
+    {
+        match self
+        {
             Threshold::CriticalSuccess => 0x55ACEE,
             Threshold::CriticalFailure => 0xAA8ED6,
             Threshold::Success => 0x78B159,
@@ -53,13 +63,15 @@ impl Threshold {
 }
 
 #[derive(Debug, Copy, Clone)]
-pub struct Roll {
+pub struct Roll
+{
     pub value: u8,
     pub threshold: Threshold,
 }
 
 #[derive(Debug)]
-pub struct RollResult {
+pub struct RollResult
+{
     pub roll_command: parser::ParsedRoll,
     pub rolls: Vec<Roll>,
     pub threshold_value: Option<u8>,
@@ -67,9 +79,12 @@ pub struct RollResult {
 
 pub fn handle_roll(
     roll_command: Result<parser::ParsedRoll, parser::ParseError>,
-) -> Result<RollResult, parser::ParseError> {
-    match roll_command {
-        Ok(roll_command) => {
+) -> Result<RollResult, parser::ParseError>
+{
+    match roll_command
+    {
+        Ok(roll_command) =>
+        {
             let dice_amount: u8 = roll_command.dice_amount.unwrap_or(1);
             let dice_size: u8 = roll_command.dice_size.unwrap_or(20);
 
@@ -77,13 +92,16 @@ pub fn handle_roll(
 
             let mut threshold_value: Option<u8> = None;
 
-            if roll_command.threshold.is_some() {
-                if roll_command.threshold_modifier.is_some() {
+            if roll_command.threshold.is_some()
+            {
+                if roll_command.threshold_modifier.is_some()
+                {
                     let modifier = roll_command.threshold_modifier.as_ref().unwrap();
                     let modifier_is_positive = modifier.is_positive;
                     let modifier_value: u8 = modifier.value;
 
-                    if modifier_is_positive {
+                    if modifier_is_positive
+                    {
                         if roll_command
                             .threshold
                             .unwrap()
@@ -93,7 +111,9 @@ pub fn handle_roll(
                             return Err(parser::ParseError::Modifier);
                         }
                         threshold_value = Some(roll_command.threshold.unwrap() + modifier_value);
-                    } else {
+                    }
+                    else
+                    {
                         if roll_command
                             .threshold
                             .unwrap()
@@ -104,7 +124,9 @@ pub fn handle_roll(
                         }
                         threshold_value = Some(roll_command.threshold.unwrap() - modifier_value);
                     }
-                } else {
+                }
+                else
+                {
                     threshold_value = Some(roll_command.threshold.unwrap());
                 }
             }
@@ -113,21 +135,35 @@ pub fn handle_roll(
                 .iter()
                 .map(|raw_roll| Roll {
                     value: *raw_roll,
-                    threshold: match threshold_value {
-                        Some(threshold) => {
-                            if dice_size == 20 {
-                                if *raw_roll < threshold {
+                    threshold: match threshold_value
+                    {
+                        Some(threshold) =>
+                        {
+                            if dice_size == 20
+                            {
+                                if *raw_roll < threshold
+                                {
                                     Threshold::Success
-                                } else if *raw_roll == threshold {
+                                }
+                                else if *raw_roll == threshold
+                                {
                                     Threshold::CriticalSuccess
-                                } else if *raw_roll == 20 {
+                                }
+                                else if *raw_roll == 20
+                                {
                                     Threshold::CriticalFailure
-                                } else {
+                                }
+                                else
+                                {
                                     Threshold::Failure
                                 }
-                            } else if *raw_roll < threshold {
+                            }
+                            else if *raw_roll < threshold
+                            {
                                 Threshold::Success
-                            } else {
+                            }
+                            else
+                            {
                                 Threshold::Failure
                             }
                         }

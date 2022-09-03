@@ -7,10 +7,11 @@ use std::process;
 
 use crate::utils::i18n::supported_language;
 
-use super::supported_language::DiscordSupportedLanguage;
 use super::locale::Locale;
+use super::supported_language::DiscordSupportedLanguage;
 
-pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale> {
+pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale>
+{
     let mut locales: HashMap<DiscordSupportedLanguage, Locale> = HashMap::new();
 
     let path: PathBuf = PathBuf::from("locales");
@@ -18,7 +19,8 @@ pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale> {
 
     println!("Loading locale files...");
 
-    if files.is_empty() {
+    if files.is_empty()
+    {
         println!(
             "{} No locale files found. The bot needs at least one locale file to load.",
             "ERROR ".bright_red()
@@ -26,16 +28,21 @@ pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale> {
         process::exit(1);
     }
 
-    for file in files {
+    for file in files
+    {
         let json = fetch_locale_from_file(&file);
 
-        if let Some(locale) = json {
+        if let Some(locale) = json
+        {
             let file_name = file.file_stem().unwrap().to_str().unwrap();
 
-            if let Some(lang_code) = supported_language::try_get_lang_code(file_name) {
+            if let Some(lang_code) = supported_language::try_get_lang_code(file_name)
+            {
                 println!("Loaded {}", format!("{}.json", file_name).yellow());
                 locales.insert(lang_code, locale);
-            } else {
+            }
+            else
+            {
                 println!(
                     "{} Lang code \"{}\" from the translation file is not supported.",
                     "ERROR ".bright_red(),
@@ -43,7 +50,9 @@ pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale> {
                 );
                 process::exit(1);
             }
-        } else {
+        }
+        else
+        {
             println!(
                 "{} Translation file \"{}\" is not matching locale format.",
                 "ERROR ".bright_red(),
@@ -56,22 +65,27 @@ pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale> {
     locales
 }
 
-fn get_files_in_dir(path: &PathBuf) -> Vec<PathBuf> {
+fn get_files_in_dir(path: &PathBuf) -> Vec<PathBuf>
+{
     let mut files: Vec<PathBuf> = Vec::new();
-    for entry in fs::read_dir(path).unwrap() {
+    for entry in fs::read_dir(path).unwrap()
+    {
         let entry = entry.unwrap();
         let path = entry.path();
-        if path.is_file() {
+        if path.is_file()
+        {
             files.push(path);
         }
     }
     files
 }
 
-fn fetch_locale_from_file(path: &PathBuf) -> Option<Locale> {
+fn fetch_locale_from_file(path: &PathBuf) -> Option<Locale>
+{
     let file_name = path.file_name().unwrap().to_str().unwrap();
 
-    if !file_name.ends_with(".json") {
+    if !file_name.ends_with(".json")
+    {
         println!(
             "{} {} is not a json file.",
             "ERROR ".bright_red(),
@@ -85,7 +99,8 @@ fn fetch_locale_from_file(path: &PathBuf) -> Option<Locale> {
 
     let locale_from_file: Result<Locale, serde_json::Error> = serde_json::from_reader(&mut reader);
 
-    match locale_from_file {
+    match locale_from_file
+    {
         Ok(locale) => Some(locale),
         Err(_) => None,
     }
