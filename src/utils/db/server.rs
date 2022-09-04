@@ -11,9 +11,8 @@ pub struct Server
 
 pub async fn try_get_server(discord_uuid: i64) -> Option<Server>
 {
-    let db_url = String::from(
-        env::var("DATABASE_URL").expect("Missing database url. Please check your .env file."),
-    );
+    let db_url =
+        env::var("DATABASE_URL").expect("Missing database url. Please check your .env file.");
     let instances = SqlitePool::connect(&db_url).await.unwrap();
     let query = "SELECT * FROM server WHERE discord_uuid = ?";
 
@@ -34,9 +33,8 @@ pub async fn try_get_server(discord_uuid: i64) -> Option<Server>
 
 async fn insert_server(discord_uuid: i64, language: String) -> Option<Server>
 {
-    let db_url = String::from(
-        env::var("DATABASE_URL").expect("Missing database url. Please check your .env file."),
-    );
+    let db_url =
+        env::var("DATABASE_URL").expect("Missing database url. Please check your .env file.");
     let instances = SqlitePool::connect(&db_url).await.unwrap();
     let query = "INSERT INTO server (discord_uuid, language) VALUES (?1, ?2)";
 
@@ -61,9 +59,8 @@ async fn insert_server(discord_uuid: i64, language: String) -> Option<Server>
 
 pub async fn update_server_language(discord_uuid: i64, new_language: String) -> bool
 {
-    let db_url = String::from(
-        env::var("DATABASE_URL").expect("Missing database url. Please check your .env file."),
-    );
+    let db_url =
+        env::var("DATABASE_URL").expect("Missing database url. Please check your .env file.");
     let instances = SqlitePool::connect(&db_url).await.unwrap();
     let query = "UPDATE server SET language = ? WHERE discord_uuid = ?";
 

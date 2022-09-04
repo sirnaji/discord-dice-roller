@@ -1,4 +1,3 @@
-use crate::utils::db;
 use crate::utils::i18n;
 use serenity::async_trait;
 use serenity::model::prelude::interaction::Interaction;
@@ -18,8 +17,6 @@ impl EventHandler for Handler
 {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction)
     {
-        // TODO: get server language
-
         self.on_interaction_create(ctx, interaction).await;
     }
 
