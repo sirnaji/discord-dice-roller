@@ -1,10 +1,5 @@
-use rusqlite::{Connection, Error, NO_PARAMS};
+mod migration;
+pub use migration::*;
 
-struct Server {
-    uuid: u32,
-    discord_uuid: u64,
-}
-
-pub fn migration() -> Result<(), Error> {
-    println!("test")
-}
+mod server;
+pub use server::*;
