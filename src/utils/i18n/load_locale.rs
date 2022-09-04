@@ -1,4 +1,5 @@
 use colored::*;
+use serde_json::Error;
 use std::collections::HashMap;
 use std::fs::{self, File};
 use std::io::BufReader;
@@ -30,35 +31,38 @@ pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale>
 
     for file in files
     {
-        let json = fetch_locale_from_file(&file);
-
-        if let Some(locale) = json
+        match fetch_locale_from_file(&file)
         {
-            let file_name = file.file_stem().unwrap().to_str().unwrap();
-
-            if let Some(lang_code) = supported_language::try_get_lang_code(file_name)
+            Ok(locale) =>
             {
-                println!("Loaded {}", format!("{}.json", file_name).yellow());
-                locales.insert(lang_code, locale);
+                let file_name = file.file_stem().unwrap().to_str().unwrap();
+
+                if let Some(lang_code) = supported_language::try_get_lang_code(file_name)
+                {
+                    println!("Loaded {}", format!("{}.json", file_name).yellow());
+                    locales.insert(lang_code, locale);
+                }
+                else
+                {
+                    println!(
+                        "{} Lang code \"{}\" from the translation file is not supported.",
+                        "ERROR ".bright_red(),
+                        &file_name
+                    );
+                    process::exit(1);
+                }
             }
-            else
+
+            Err(err) =>
             {
                 println!(
-                    "{} Lang code \"{}\" from the translation file is not supported.",
+                    "{} Couldn't load \"{}\" : {}",
                     "ERROR ".bright_red(),
-                    &file_name
+                    &file.file_name().unwrap().to_str().unwrap(),
+                    err,
                 );
                 process::exit(1);
             }
-        }
-        else
-        {
-            println!(
-                "{} Translation file \"{}\" is not matching locale format.",
-                "ERROR ".bright_red(),
-                &file.file_name().unwrap().to_str().unwrap()
-            );
-            process::exit(1);
         }
     }
 
@@ -80,7 +84,7 @@ fn get_files_in_dir(path: &PathBuf) -> Vec<PathBuf>
     files
 }
 
-fn fetch_locale_from_file(path: &PathBuf) -> Option<Locale>
+fn fetch_locale_from_file(path: &PathBuf) -> Result<Locale, Error>
 {
     let file_name = path.file_name().unwrap().to_str().unwrap();
 
@@ -101,7 +105,7 @@ fn fetch_locale_from_file(path: &PathBuf) -> Option<Locale>
 
     match locale_from_file
     {
-        Ok(locale) => Some(locale),
-        Err(_) => None,
+        Ok(locale) => Ok(locale),
+        Err(err) => Err(err),
     }
 }
