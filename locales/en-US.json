@@ -1,8 +1,8 @@
 {
     "infos": {
         "name": "English, US",
-        "native_name": "English, US",
-        "flag_emoji": ":flag_us:"
+        "nativeName": "English, US",
+        "flagEmoji": ":flag_us:"
     },
     "translations": {
         "commands": {
