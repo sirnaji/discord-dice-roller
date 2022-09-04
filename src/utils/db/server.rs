@@ -9,7 +9,7 @@ pub struct Server
     pub language: String,
 }
 
-pub async fn try_get_server(discord_uuid: i64) -> Option<Server>
+pub async fn try_get_server(discord_uuid: u64) -> Option<Server>
 {
     let db_url =
         env::var("DATABASE_URL").expect("Missing database url. Please check your .env file.");
@@ -31,7 +31,7 @@ pub async fn try_get_server(discord_uuid: i64) -> Option<Server>
     }
 }
 
-async fn insert_server(discord_uuid: i64, language: String) -> Option<Server>
+async fn insert_server(discord_uuid: u64, language: String) -> Option<Server>
 {
     let db_url =
         env::var("DATABASE_URL").expect("Missing database url. Please check your .env file.");
@@ -39,13 +39,13 @@ async fn insert_server(discord_uuid: i64, language: String) -> Option<Server>
     let query = "INSERT INTO server (discord_uuid, language) VALUES (?1, ?2)";
 
     match sqlx::query(query)
-        .bind(discord_uuid)
+        .bind(discord_uuid as i64)
         .bind(language.to_string())
         .execute(&instances)
         .await
     {
         Ok(_) => Some(Server {
-            discord_uuid,
+            discord_uuid: discord_uuid.try_into().unwrap(),
             language,
         }),
 
@@ -57,7 +57,7 @@ async fn insert_server(discord_uuid: i64, language: String) -> Option<Server>
     }
 }
 
-pub async fn update_server_language(discord_uuid: i64, new_language: String) -> bool
+pub async fn update_server_language(discord_uuid: u64, new_language: String) -> bool
 {
     let db_url =
         env::var("DATABASE_URL").expect("Missing database url. Please check your .env file.");
@@ -66,7 +66,7 @@ pub async fn update_server_language(discord_uuid: i64, new_language: String) -> 
 
     match sqlx::query(query)
         .bind(new_language)
-        .bind(discord_uuid)
+        .bind(discord_uuid as i64)
         .execute(&instances)
         .await
     {
