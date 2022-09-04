@@ -4,15 +4,14 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Locale
 {
-    pub translations: Translations,
     pub infos: Infos,
+    pub translations: Translations,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Infos
 {
-    pub code: String,
     pub name: String,
     pub native_name: String,
     pub flag_emoji: String,
