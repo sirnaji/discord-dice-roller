@@ -1,5 +1,6 @@
 use super::Handler;
 use crate::commands::roll;
+use crate::utils::db;
 use crate::utils::enums::EmbedColor;
 use serenity::builder::CreateEmbed;
 use serenity::model::prelude::interaction::{Interaction, InteractionResponseType};
@@ -11,9 +12,28 @@ impl Handler
     {
         if let Interaction::ApplicationCommand(command) = interaction
         {
+            let locale = if let Some(guild_id) = command.guild_id
+            {
+                if let Some(guild) = db::try_get_server(*guild_id.as_u64()).await
+                {
+                    let guild_lang_code = guild.language;
+                    self.get_locale(&guild_lang_code).unwrap()
+                }
+                else
+                {
+                    let lang_code = &self.default_locale;
+                    self.get_locale(lang_code).unwrap()
+                }
+            }
+            else
+            {
+                let lang_code = self.default_locale.clone();
+                self.get_locale(&lang_code).unwrap()
+            };
+
             let content: CreateEmbed = match command.data.name.as_str()
             {
-                "roll" => roll::handler(&command),
+                "roll" => roll::handler(&command, locale),
                 // In case other slash commands are added later
                 // but have yet to be implemented.
                 _ =>

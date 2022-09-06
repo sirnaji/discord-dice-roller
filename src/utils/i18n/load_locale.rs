@@ -1,3 +1,5 @@
+use super::locale::Locale;
+use crate::utils::i18n::supported_language;
 use colored::*;
 use serde_json::Error;
 use std::collections::HashMap;
@@ -6,14 +8,9 @@ use std::io::BufReader;
 use std::path::PathBuf;
 use std::process;
 
-use crate::utils::i18n::supported_language;
-
-use super::locale::Locale;
-use super::supported_language::DiscordSupportedLanguage;
-
-pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale>
+pub fn load_locales() -> HashMap<String, Locale>
 {
-    let mut locales: HashMap<DiscordSupportedLanguage, Locale> = HashMap::new();
+    let mut locales: HashMap<String, Locale> = HashMap::new();
 
     let path: PathBuf = PathBuf::from("locales");
     let files = get_files_in_dir(&path);
@@ -40,7 +37,7 @@ pub fn load_locales() -> HashMap<DiscordSupportedLanguage, Locale>
                 if let Some(lang_code) = supported_language::try_get_lang_code(file_name)
                 {
                     println!("Loaded {}", format!("{}.json", file_name).yellow());
-                    locales.insert(lang_code, locale);
+                    locales.insert(lang_code.to_str().to_string(), locale);
                 }
                 else
                 {
@@ -103,9 +100,5 @@ fn fetch_locale_from_file(path: &PathBuf) -> Result<Locale, Error>
 
     let locale_from_file: Result<Locale, serde_json::Error> = serde_json::from_reader(&mut reader);
 
-    match locale_from_file
-    {
-        Ok(locale) => Ok(locale),
-        Err(err) => Err(err),
-    }
+    locale_from_file
 }

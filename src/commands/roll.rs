@@ -1,4 +1,5 @@
 use crate::utils::enums::EmbedColor;
+use crate::utils::i18n::locale::Locale;
 use crate::utils::roller::{self, Roll, Threshold};
 use serenity::model::prelude::command::{Command, CommandOptionType};
 use serenity::prelude::Context;
@@ -11,7 +12,7 @@ use serenity::{
 };
 use std::fmt::Write as _;
 
-pub fn handler(command: &ApplicationCommandInteraction) -> CreateEmbed
+pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> CreateEmbed
 {
     let options = command
         .data
