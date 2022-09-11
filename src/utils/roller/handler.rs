@@ -1,7 +1,7 @@
 use super::parser;
 use super::random;
 
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Threshold
 {
     CriticalSuccess,
