@@ -14,8 +14,8 @@
                     "die": "die"
                 },
                 "rollDetails": {
-                    "rollingMultipleDice": "rolling {} {}-sided dice",
-                    "rollingSingleDie": "rolling a {}-sided die"
+                    "rollingMultipleDice": "rolling {amount} {size}-sided dice",
+                    "rollingSingleDie": "rolling a {size}-sided die"
                 },
                 "threshold": {
                     "criticalFailure": "critical failure",
