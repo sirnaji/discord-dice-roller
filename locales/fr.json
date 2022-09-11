@@ -8,20 +8,20 @@
         "commands": {
             "roll": {
                 "name": "roll",
-                "description": "roll dice",
+                "description": "jet de dé",
                 "dictionary": {
-                    "dice": "dice",
-                    "die": "die"
+                    "dice": "dés",
+                    "die": "dé"
                 },
                 "rollDetails": {
-                    "rollingMultipleDice": "rolling {} {}-sided dice",
-                    "rollingSingleDie": "rolling a {}-sided die"
+                    "rollingMultipleDice": "Jet de {amount} dés de {size}",
+                    "rollingSingleDie": "Jet d'un dé de {size}"
                 },
                 "threshold": {
-                    "criticalFailure": "critical failure",
-                    "criticalSuccess": "critical success",
-                    "failure": "failure",
-                    "success": "success"
+                    "criticalFailure": "échec critique",
+                    "criticalSuccess": "réussite critique",
+                    "failure": "échec",
+                    "success": "succès"
                 }
             }
         }
