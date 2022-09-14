@@ -12,6 +12,7 @@ use serenity::{
 };
 use std::fmt::Write as _;
 
+// Roll command interaction handler
 pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> CreateEmbed
 {
     let options = command
@@ -23,29 +24,35 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
         .as_ref()
         .expect("Expected roll input.");
 
+    // If there is the "command" option from the interaction
     if let CommandDataOptionValue::String(value) = options
     {
         let rolls = roller::new(value);
 
         match rolls
         {
-            Ok(rolls) =>
+            Ok(roll_result) =>
             {
-                let roll_command = rolls.roll_command;
+                let roll_command = roll_result.roll_command;
 
+                // Get roll command attributes
                 let rolls_threshold = roll_command.threshold;
-                let dice_amount = roll_command.dice_amount;
-                let dice_size = roll_command.dice_size;
+                let dice_amount = roll_command.dice_amount.unwrap_or(1); // unwrap or default to 1 (amount)
+                let dice_size = roll_command.dice_size.unwrap_or(20); // unwrap or default 20 (size/faces)
 
-                let rolls_values = rolls.rolls;
+                let rolls_values = roll_result.rolls;
 
+                // Create base embed
                 let mut embed = CreateEmbed::default()
                     .color(EmbedColor::ActionBase as u32)
                     .to_owned();
 
+                // if dice_amount is 1 or None
+
                 match dice_amount
                 {
-                    Some(1) =>
+                    // If only one die was rolled
+                    1 =>
                     {
                         let roll: Roll = rolls_values[0];
 
@@ -60,6 +67,7 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                             }
                         };
 
+                        // Set embed color based on the roll threshold
                         embed.color(roll.threshold.get_color());
 
                         match rolls_threshold
@@ -85,18 +93,19 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                             }
                         }
 
-                        embed.description(format!("Rolling an {:?}-sided die", dice_size.unwrap()));
+                        embed.description(format!("Rolling an {:?}-sided die", dice_size));
                     }
 
+                    // If multiple dice have been rolled
                     _ =>
                     {
                         let mut success_counter: u8 = 0;
-                        let mut rolls_string = String::new();
+                        let mut rolls_string: String = String::new();
                         let mut roll_index: u8 = 1;
 
                         for roll in rolls_values
                         {
-                            let roll_index_string = {
+                            let roll_index_string: String = {
                                 if roll_index < 10
                                 {
                                     format!("0{}", roll_index)
@@ -107,7 +116,7 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                                 }
                             };
 
-                            let roll_value_string = {
+                            let roll_value_string: String = {
                                 if roll.value < 10
                                 {
                                     format!("0{}", roll.value)
@@ -124,18 +133,22 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                                 {
                                     let _ = writeln!(
                                         rolls_string,
-                                        "`DIE {}` :⠀⠀⠀**{}**",
-                                        roll_index_string, roll_value_string
+                                        "`{} {}` :⠀⠀⠀**{}**",
+                                        locale.translations.commands.roll.dictionary.die,
+                                        roll_index_string,
+                                        roll_value_string
                                     );
                                 }
 
                                 _ =>
                                 {
-                                    let roll_threshold_string = rolls.threshold_value.unwrap();
+                                    let roll_threshold_string =
+                                        roll_result.threshold_value.unwrap();
 
                                     let _ = writeln!(
                                         rolls_string,
-                                        "`DIE {}` :⠀⠀⠀{}⠀⠀**{}**/{:?} - {} {}",
+                                        "`{} {}` :⠀⠀⠀{}⠀⠀**{}**/{:?} - {} {}",
+                                        locale.translations.commands.roll.dictionary.die,
                                         roll_index_string,
                                         roll.threshold.get_color_emoji(),
                                         roll_value_string,
@@ -157,20 +170,37 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
 
                         if roll_command.threshold.is_some()
                         {
-                            embed.footer(|f| {
-                                f.text(format!(
-                                    "{}/{:?} succesful rolls",
-                                    success_counter,
-                                    dice_amount.unwrap()
-                                ))
-                            });
+                            // Preparing the embed footer text
+                            let mut embed_footer = locale
+                                .translations
+                                .commands
+                                .roll
+                                .roll_details
+                                .successful_dice_rolls;
+
+                            embed_footer = embed_footer
+                                .replace("{successful_rolls}", &success_counter.to_string());
+
+                            embed_footer =
+                                embed_footer.replace("{total_rolls}", &dice_amount.to_string());
+
+                            embed.footer(|f| f.text(embed_footer));
                         }
 
-                        embed.description(format!(
-                            "Rolling {} dice with a {}-sided die",
-                            dice_amount.unwrap(),
-                            dice_size.unwrap()
-                        ));
+                        // Preparing the embed description text
+                        let mut embed_description = locale
+                            .translations
+                            .commands
+                            .roll
+                            .roll_details
+                            .rolling_multiple_dice;
+
+                        embed_description =
+                            embed_description.replace("{amount}", &dice_amount.to_string());
+                        embed_description =
+                            embed_description.replace("{size}", &dice_size.to_string());
+
+                        embed.description(embed_description);
                         embed.field("⠀", rolls_string, false);
                     }
                 }
@@ -178,6 +208,7 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                 embed
             }
 
+            // If the result of the roll is an error
             Err(error) =>
             {
                 println!("Error: {:?}", error);

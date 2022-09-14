@@ -45,6 +45,7 @@ pub fn load_locales() -> HashMap<String, Locale>
                         .roll
                         .roll_details
                         .rolling_multiple_dice;
+
                     let roll_text_2 = &locale
                         .translations
                         .commands
@@ -52,9 +53,18 @@ pub fn load_locales() -> HashMap<String, Locale>
                         .roll_details
                         .rolling_single_die;
 
+                    let roll_text_3 = &locale
+                        .translations
+                        .commands
+                        .roll
+                        .roll_details
+                        .successful_dice_rolls;
+
                     if !roll_text_1.contains("{amount}")
                         | !roll_text_1.contains("{size}")
                         | !roll_text_2.contains("{size}")
+                        | !roll_text_3.contains("{successful_rolls")
+                        | !roll_text_3.contains("{total_rolls}")
                     {
                         println!(
                             "{} Missing parameter in one of the translations of \"{}\".",

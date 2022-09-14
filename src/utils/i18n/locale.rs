@@ -56,6 +56,7 @@ pub struct RollDetails
 {
     pub rolling_multiple_dice: String,
     pub rolling_single_die: String,
+    pub successful_dice_rolls: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

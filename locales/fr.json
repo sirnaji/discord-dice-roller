@@ -15,7 +15,8 @@
                 },
                 "rollDetails": {
                     "rollingMultipleDice": "Jet de {amount} dés de {size}",
-                    "rollingSingleDie": "Jet d'un dé de {size}"
+                    "rollingSingleDie": "Jet d'un dé de {size}",
+                    "successfulDiceRolls": "{successful_rolls}/{total_rolls} jets réussis"
                 },
                 "threshold": {
                     "criticalFailure": "échec critique",

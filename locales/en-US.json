@@ -15,7 +15,8 @@
                 },
                 "rollDetails": {
                     "rollingMultipleDice": "rolling {amount} {size}-sided dice",
-                    "rollingSingleDie": "rolling a {size}-sided die"
+                    "rollingSingleDie": "rolling a {size}-sided die",
+                    "successfulDiceRolls": "{successful_rolls}/{total_rolls} successful dice rolls"
                 },
                 "threshold": {
                     "criticalFailure": "critical failure",
