@@ -75,7 +75,7 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                                 embed.field(
                                     format!("{:?}", roll.threshold).to_uppercase(),
                                     format!(
-                                        "{}⠀⠀**{}**/{:?} {}",
+                                        "{}⠀⠀{}/**{:?}** {}",
                                         roll.threshold.get_color_emoji(),
                                         roll_value_string,
                                         threshold,
@@ -155,7 +155,7 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
 
                                     let _ = writeln!(
                                         rolls_string,
-                                        "`{} {}` :⠀⠀⠀{}⠀⠀**{}**/{:?} - {} {}",
+                                        "`{} {}` :⠀⠀⠀{}⠀⠀{}/**{:?}** - {} {}",
                                         locale.translations.commands.roll.dictionary.die,
                                         roll_index_string,
                                         roll.threshold.get_color_emoji(),
