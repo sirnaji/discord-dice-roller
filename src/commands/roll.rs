@@ -37,8 +37,8 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
 
                 // Get roll command attributes
                 let rolls_threshold = roll_command.threshold;
-                let dice_amount = roll_command.dice_amount.unwrap_or(1); // unwrap or default to 1 (amount)
-                let dice_size = roll_command.dice_size.unwrap_or(20); // unwrap or default 20 (size/faces)
+                let dice_amount = roll_command.dice_amount.unwrap_or(1); // unwrap or default to 1
+                let dice_size = roll_command.dice_size.unwrap_or(20); // unwrap or default to 20
 
                 let rolls_values = roll_result.rolls;
 
@@ -46,8 +46,6 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                 let mut embed = CreateEmbed::default()
                     .color(EmbedColor::ActionBase as u32)
                     .to_owned();
-
-                // if dice_amount is 1 or None
 
                 match dice_amount
                 {
@@ -89,11 +87,21 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
 
                             None =>
                             {
-                                embed.field("ROLL RESULT:", roll_value_string, false);
+                                embed.description(roll_value_string);
                             }
                         }
 
-                        embed.description(format!("Rolling an {:?}-sided die", dice_size));
+                        // Preparing the embed title
+                        let mut embed_title = locale
+                            .translations
+                            .commands
+                            .roll
+                            .roll_details
+                            .rolling_single_die;
+
+                        embed_title = embed_title.replace("{size}", &dice_size.to_string());
+
+                        embed.title(embed_title);
                     }
 
                     // If multiple dice have been rolled
@@ -208,30 +216,34 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                 embed
             }
 
-            // If the result of the roll is an error
             Err(error) =>
             {
+                // Shouldn't be triggered, the roller should ALWAYS
+                // return a RollResult that default to 1d20 (one die of 20 faces)
+                // Ill probably rework this in the future, what's the point of a Result<>
+                // if Im supposed to never have an Error? kekw
                 println!("Error: {:?}", error);
 
-                let embed = CreateEmbed::default()
+                CreateEmbed::default()
                     .title("Roll")
                     .description(format!("{:?}", error))
                     .color(EmbedColor::ActionError as u32)
-                    .to_owned();
-
-                embed
+                    .to_owned()
             }
         }
     }
     else
     {
-        let embed = CreateEmbed::default()
+        // Return an error embed if command argument is missing
+        //
+        // Should never happen since the argument is
+        // enforced on the client side.
+        // Will be reworked in the future
+        CreateEmbed::default()
         .title("Roll")
         .description("Command input is missing. Type /help for more information about how to use this command.")
-        .color(EmbedColor::ActionBase as u32)
-        .to_owned();
-
-        embed
+        .color(EmbedColor::ActionError as u32)
+        .to_owned()
     }
 }
 

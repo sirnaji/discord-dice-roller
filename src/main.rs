@@ -28,6 +28,7 @@ async fn main()
         .await
         .expect("Error while creating the client.");
 
+    // Start client and print potential errors
     if let Err(err) = client.start().await
     {
         println!("An error occurred while running the client: {:?}", err);
