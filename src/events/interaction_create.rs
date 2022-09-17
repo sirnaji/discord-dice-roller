@@ -1,8 +1,9 @@
 use super::Handler;
-use crate::commands::roll;
+use crate::commands::{roll, setlang};
 use crate::utils::db;
 use crate::utils::enums::EmbedColor;
 use serenity::builder::CreateEmbed;
+use serenity::model::prelude::interaction::application_command::ApplicationCommandInteraction;
 use serenity::model::prelude::interaction::{Interaction, InteractionResponseType};
 use serenity::prelude::*;
 
@@ -31,9 +32,11 @@ impl Handler
                 self.get_locale(&lang_code).unwrap()
             };
 
-            let content: CreateEmbed = match command.data.name.as_str()
+            match command.data.name.as_str()
             {
-                "roll" => roll::handler(&command, locale),
+                "roll" => roll::handler(&ctx, &command, locale).await,
+                "setlang" => setlang::handler(&ctx, &command, locale),
+
                 // In case other slash commands are added later
                 // but have yet to be implemented.
                 _ =>
@@ -44,21 +47,28 @@ impl Handler
                         .color(EmbedColor::ActionBase as u32)
                         .to_owned();
 
-                    embed
+                    return self.embed_response(ctx, command, embed).await;
                 }
             };
-
-            // Send the embed as a response to the user interaction.
-            if let Err(err) = command
-                .create_interaction_response(&ctx.http, |response| {
-                    response
-                        .kind(InteractionResponseType::ChannelMessageWithSource)
-                        .interaction_response_data(|rdata| rdata.add_embed(content))
-                })
-                .await
-            {
-                println!("Error creating interaction response: {:?}", err);
-            }
         };
+    }
+
+    pub async fn embed_response(
+        &self,
+        ctx: Context,
+        command: ApplicationCommandInteraction,
+        embed: CreateEmbed,
+    )
+    {
+        if let Err(err) = command
+            .create_interaction_response(&ctx.http, |response| {
+                response
+                    .kind(InteractionResponseType::ChannelMessageWithSource)
+                    .interaction_response_data(|rdata| rdata.add_embed(embed))
+            })
+            .await
+        {
+            println!("Error creating interaction response: {:?}", err);
+        }
     }
 }

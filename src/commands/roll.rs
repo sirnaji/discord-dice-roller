@@ -2,6 +2,7 @@ use crate::utils::enums::EmbedColor;
 use crate::utils::i18n::locale::Locale;
 use crate::utils::roller::{self, Roll, Threshold};
 use serenity::model::prelude::command::{Command, CommandOptionType};
+use serenity::model::prelude::interaction::InteractionResponseType;
 use serenity::prelude::Context;
 use serenity::{
     builder::CreateEmbed,
@@ -13,7 +14,7 @@ use serenity::{
 use std::fmt::Write as _;
 
 // Roll command interaction handler
-pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> CreateEmbed
+pub async fn handler(ctx: &Context, command: &ApplicationCommandInteraction, locale: Locale)
 {
     let options = command
         .data
@@ -23,6 +24,11 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
         .resolved
         .as_ref()
         .expect("Expected roll input.");
+
+    // Create base embed
+    let mut embed = CreateEmbed::default()
+        .color(EmbedColor::ActionBase as u32)
+        .to_owned();
 
     // If there is the "command" option from the interaction
     if let CommandDataOptionValue::String(value) = options
@@ -41,11 +47,6 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                 let dice_size = roll_command.dice_size.unwrap_or(20); // unwrap or default to 20
 
                 let rolls_values = roll_result.rolls;
-
-                // Create base embed
-                let mut embed = CreateEmbed::default()
-                    .color(EmbedColor::ActionBase as u32)
-                    .to_owned();
 
                 match dice_amount
                 {
@@ -212,8 +213,6 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                         embed.field("⠀", rolls_string, false);
                     }
                 }
-
-                embed
             }
 
             Err(error) =>
@@ -224,11 +223,10 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
                 // if Im supposed to never have an Error? kekw
                 println!("Error: {:?}", error);
 
-                CreateEmbed::default()
+                embed
                     .title("Roll")
                     .description(format!("{:?}", error))
-                    .color(EmbedColor::ActionError as u32)
-                    .to_owned()
+                    .color(EmbedColor::ActionError as u32);
             }
         }
     }
@@ -239,11 +237,22 @@ pub fn handler(command: &ApplicationCommandInteraction, locale: Locale) -> Creat
         // Should never happen since the argument is
         // enforced on the client side.
         // Will be reworked in the future
-        CreateEmbed::default()
-        .title("Roll")
-        .description("Command input is missing. Type /help for more information about how to use this command.")
-        .color(EmbedColor::ActionError as u32)
-        .to_owned()
+        embed
+            .title("Roll")
+            .description("Command input is missing. Type /help for more information about how to use this command.")
+            .color(EmbedColor::ActionError as u32);
+    }
+
+    // Send the embed as a response to the user interaction.
+    if let Err(err) = command
+        .create_interaction_response(&ctx.http, |response| {
+            response
+                .kind(InteractionResponseType::ChannelMessageWithSource)
+                .interaction_response_data(|rdata| rdata.add_embed(embed))
+        })
+        .await
+    {
+        println!("Error creating interaction response: {:?}", err);
     }
 }
 
