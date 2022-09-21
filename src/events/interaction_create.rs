@@ -35,7 +35,7 @@ impl Handler
             match command.data.name.as_str()
             {
                 "roll" => roll::handler(&ctx, &command, locale).await,
-                "setlang" => setlang::handler(&ctx, &command, locale),
+                "setlang" => setlang::handler(&ctx, &command, locale).await,
 
                 // In case other slash commands are added later
                 // but have yet to be implemented.
@@ -50,7 +50,7 @@ impl Handler
                     return self.embed_response(ctx, command, embed).await;
                 }
             };
-        };
+        }
     }
 
     pub async fn embed_response(
