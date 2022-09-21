@@ -32,5 +32,6 @@ features = [
     "model",
     "utils",
     "http",
+    "collector",
 ]
 version = "0.11.5"
