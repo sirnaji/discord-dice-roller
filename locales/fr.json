@@ -2,7 +2,10 @@
     "infos": {
         "name": "French",
         "nativeName": "Français",
-        "flagEmoji": ":flag_fr:"
+        "emoji": {
+            "id": 1021107200988545075,
+            "name": "flag_fr"
+        }
     },
     "translations": {
         "commands": {

@@ -2,7 +2,10 @@
     "infos": {
         "name": "English, US",
         "nativeName": "English, US",
-        "flagEmoji": ":flag_us:"
+        "emoji": {
+            "id": 1021108688263589909,
+            "name": "flag_us"
+        }
     },
     "translations": {
         "commands": {

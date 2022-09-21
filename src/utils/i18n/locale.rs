@@ -14,7 +14,15 @@ pub struct Infos
 {
     pub name: String,
     pub native_name: String,
-    pub flag_emoji: String,
+    pub emoji: Emoji,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct Emoji
+{
+    pub id: u64,
+    pub name: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

@@ -15,8 +15,6 @@ pub fn load_locales() -> HashMap<String, Locale>
     let path: PathBuf = PathBuf::from("locales");
     let files = get_files_in_dir(&path);
 
-    println!("Loading locale files...");
-
     if files.is_empty()
     {
         println!(
@@ -75,7 +73,6 @@ pub fn load_locales() -> HashMap<String, Locale>
                     }
 
                     // Insert locale in locales if everything's good.
-                    println!("Loaded {}", format!("{}.json", file_name).yellow());
                     locales.insert(lang_code.to_str().to_string(), locale);
                 }
                 else
