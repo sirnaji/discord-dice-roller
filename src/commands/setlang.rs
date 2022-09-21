@@ -50,14 +50,16 @@ pub async fn handler(ctx: &Context, command: &ApplicationCommandInteraction, _lo
                                             // o.emoji(emoji_identifier)
                                         });
                                     }
-                                    return f;
+
+                                    f
                                 })
                             })
                         });
-                        return c;
+
+                        c
                     });
 
-                    return rdata;
+                    rdata
                 })
         })
         .await
@@ -91,7 +93,7 @@ pub async fn handler(ctx: &Context, command: &ApplicationCommandInteraction, _lo
             // We modify the initial message to confirm the change to the user
             interaction
                 .edit_original_interaction_response(&ctx, |response| {
-                    response.content("YES QUEEN").components(|c| c.into())
+                    response.content("YES QUEEN").components(|c| c)
                 })
                 .await
                 .unwrap();

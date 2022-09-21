@@ -47,7 +47,7 @@ impl Handler
                         .color(EmbedColor::ActionBase as u32)
                         .to_owned();
 
-                    return self.embed_response(ctx, command, embed).await;
+                    self.embed_response(ctx, command, embed).await
                 }
             };
         }
