@@ -3,8 +3,7 @@ use std::time::Duration;
 use crate::utils::i18n::get_available_locales;
 use crate::utils::i18n::locale::Locale;
 use serenity::{
-    builder::CreateComponents,
-    collector::{ComponentInteractionCollectorBuilder, EventCollectorBuilder},
+    collector::ComponentInteractionCollectorBuilder,
     futures::StreamExt,
     model::prelude::{
         command::Command,
@@ -12,7 +11,7 @@ use serenity::{
             application_command::ApplicationCommandInteraction, InteractionResponseType,
             InteractionType,
         },
-        EmojiId, EmojiIdentifier, EventType,
+        EmojiId, EmojiIdentifier,
     },
     prelude::Context,
     Error,
