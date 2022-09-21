@@ -11,6 +11,6 @@ impl Handler
         println!("{} is now online.", ready.user.name.yellow());
 
         // Register the shash commands to the Discord API.
-        commands::register_commands(&ctx);
+        commands::register_commands(&ctx).await;
     }
 }
