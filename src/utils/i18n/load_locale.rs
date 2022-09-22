@@ -36,33 +36,8 @@ pub fn load_locales() -> HashMap<String, Locale>
                 // If lang code is supported
                 if let Some(lang_code) = supported_language::try_get_lang_code(file_name)
                 {
-                    // Checking rows that should have parameters
-                    let roll_text_1 = &locale
-                        .translations
-                        .commands
-                        .roll
-                        .roll_details
-                        .rolling_multiple_dice;
-
-                    let roll_text_2 = &locale
-                        .translations
-                        .commands
-                        .roll
-                        .roll_details
-                        .rolling_single_die;
-
-                    let roll_text_3 = &locale
-                        .translations
-                        .commands
-                        .roll
-                        .roll_details
-                        .successful_dice_rolls;
-
-                    if !roll_text_1.contains("{amount}")
-                        | !roll_text_1.contains("{size}")
-                        | !roll_text_2.contains("{size}")
-                        | !roll_text_3.contains("{successful_rolls")
-                        | !roll_text_3.contains("{total_rolls}")
+                    // If Locale is missing some parameters
+                    if !check_locale_for_missing_parameters(&locale)
                     {
                         println!(
                             "{} Missing parameter in one of the translations of \"{}\".",
@@ -116,6 +91,51 @@ fn get_files_in_dir(path: &PathBuf) -> Vec<PathBuf>
         }
     }
     files
+}
+
+fn check_locale_for_missing_parameters(locale: &Locale) -> bool
+{
+    // Checking rows that should have parameters
+    let roll_text_1 = &locale
+        .translations
+        .commands
+        .roll
+        .roll_details
+        .rolling_multiple_dice;
+
+    let roll_text_2 = &locale
+        .translations
+        .commands
+        .roll
+        .roll_details
+        .rolling_single_die;
+
+    let roll_text_3 = &locale
+        .translations
+        .commands
+        .roll
+        .roll_details
+        .successful_dice_rolls;
+
+    let setlang_updated_title = &locale
+        .translations
+        .commands
+        .setlang
+        .updated_to_language_title;
+
+    if !roll_text_1.contains("{amount}")
+        || !roll_text_1.contains("{size}")
+        || !roll_text_2.contains("{size}")
+        || !roll_text_3.contains("{successful_rolls")
+        || !roll_text_3.contains("{total_rolls}")
+        || !setlang_updated_title.contains("{lang_name}")
+    {
+        false
+    }
+    else
+    {
+        true
+    }
 }
 
 fn fetch_locale_from_file(path: &PathBuf) -> Result<Locale, Error>
