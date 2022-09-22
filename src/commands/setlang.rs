@@ -27,7 +27,7 @@ pub async fn handler(ctx: &Context, command: &ApplicationCommandInteraction, loc
     //
     // Not supposed to be called as the command should
     // be registered as guild-only on Discord
-    if !command.guild_id.is_some()
+    if command.guild_id.is_none()
     {
         command
             .create_interaction_response(&ctx.http, |response| {

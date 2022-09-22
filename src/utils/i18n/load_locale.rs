@@ -123,19 +123,12 @@ fn check_locale_for_missing_parameters(locale: &Locale) -> bool
         .setlang
         .updated_to_language_title;
 
-    if !roll_text_1.contains("{amount}")
+    !(!roll_text_1.contains("{amount}")
         || !roll_text_1.contains("{size}")
         || !roll_text_2.contains("{size}")
         || !roll_text_3.contains("{successful_rolls")
         || !roll_text_3.contains("{total_rolls}")
-        || !setlang_updated_title.contains("{lang_name}")
-    {
-        false
-    }
-    else
-    {
-        true
-    }
+        || !setlang_updated_title.contains("{lang_name}"))
 }
 
 fn fetch_locale_from_file(path: &PathBuf) -> Result<Locale, Error>
