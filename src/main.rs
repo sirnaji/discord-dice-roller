@@ -17,7 +17,6 @@ async fn main()
 
     // DB stuff
     init_database().await;
-    // let can_update = update_server_language(server.discord_uuid, "en-US".to_string()).await;
 
     // Create a new Client and run it.
     let mut client = Client::builder(&token, GatewayIntents::empty())
