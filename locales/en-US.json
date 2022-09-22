@@ -11,22 +11,29 @@
         "commands": {
             "roll": {
                 "name": "roll",
-                "description": "roll dice",
+                "description": "Roll dice",
                 "dictionary": {
-                    "dice": "dice",
-                    "die": "die"
+                    "dice": "Dice",
+                    "die": "Die"
                 },
                 "rollDetails": {
-                    "rollingMultipleDice": "rolling {amount} {size}-sided dice",
-                    "rollingSingleDie": "rolling a {size}-sided die",
+                    "rollingMultipleDice": "Rolling {amount} {size}-sided dice",
+                    "rollingSingleDie": "Rolling a {size}-sided die",
                     "successfulDiceRolls": "{successful_rolls}/{total_rolls} successful dice rolls"
                 },
                 "threshold": {
-                    "criticalFailure": "critical failure",
-                    "criticalSuccess": "critical success",
-                    "failure": "failure",
-                    "success": "success"
+                    "criticalFailure": "Critical Failure",
+                    "criticalSuccess": "Critical Success",
+                    "failure": "Failure",
+                    "success": "Success"
                 }
+            },
+            "setlang": {
+                "name": "setlang",
+                "description": "Update bot language for this server",
+                "updatedToLanguageTitle": "Successfully updated bot language to {lang_name}",
+                "updatedToLanguageDesc": "You can now dismiss this message",
+                "selectNewLanguage": "Please select the desired language here"
             }
         }
     }

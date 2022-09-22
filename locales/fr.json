@@ -11,10 +11,10 @@
         "commands": {
             "roll": {
                 "name": "roll",
-                "description": "jet de dé",
+                "description": "Jet de dé",
                 "dictionary": {
-                    "dice": "dés",
-                    "die": "dé"
+                    "dice": "Dés",
+                    "die": "Dé"
                 },
                 "rollDetails": {
                     "rollingMultipleDice": "Jet de {amount} dés de {size}",
@@ -22,11 +22,18 @@
                     "successfulDiceRolls": "{successful_rolls}/{total_rolls} jets réussis"
                 },
                 "threshold": {
-                    "criticalFailure": "échec critique",
-                    "criticalSuccess": "réussite critique",
-                    "failure": "échec",
-                    "success": "succès"
+                    "criticalFailure": "Échec Critique",
+                    "criticalSuccess": "Réussite Critique",
+                    "failure": "Échec",
+                    "success": "Succès"
                 }
+            },
+            "setlang": {
+                "name": "setlang",
+                "description": "Changer la langue du bot pour ce serveur",
+                "updatedToLanguageTitle": "La langue du bot a bien été mise à jour en {lang_name}",
+                "updatedToLanguageDesc": "Vous pouvez fermer ce message",
+                "selectNewLanguage": "Veuillez séléctionner la nouvelle langue"
             }
         }
     }

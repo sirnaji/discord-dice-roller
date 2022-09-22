@@ -37,6 +37,7 @@ pub struct Translations
 pub struct Commands
 {
     pub roll: Roll,
+    pub setlang: Setlang,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -75,4 +76,15 @@ pub struct RollThreshold
     pub critical_success: String,
     pub failure: String,
     pub success: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct Setlang
+{
+    pub name: String,
+    pub description: String,
+    pub updated_to_language_title: String,
+    pub updated_to_language_desc: String,
+    pub select_new_language: String,
 }
