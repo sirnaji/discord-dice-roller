@@ -8,6 +8,11 @@
         }
     },
     "translations": {
+        "general": {
+            "guildOnlyCmd": "This command cannot be used in DMs.",
+            "actionErrorTitle": "Sorry, this action encountered an error.",
+            "actionErrorDesc": "Please try again later or contact an administrator."
+        },
         "commands": {
             "roll": {
                 "name": "roll",

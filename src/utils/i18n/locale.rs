@@ -29,7 +29,17 @@ pub struct Emoji
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Translations
 {
+    pub general: General,
     pub commands: Commands,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct General
+{
+    pub guild_only_cmd: String,
+    pub action_error_title: String,
+    pub action_error_desc: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
