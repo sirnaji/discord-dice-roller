@@ -11,7 +11,8 @@
         "general": {
             "guildOnlyCmd": "This command cannot be used in DMs.",
             "actionErrorTitle": "Sorry, this action encountered an error.",
-            "actionErrorDesc": "Please try again later or contact an administrator."
+            "actionErrorDesc": "Please try again later or contact an administrator.",
+            "error": "Erreur"
         },
         "commands": {
             "roll": {
@@ -38,7 +39,11 @@
                 "description": "Changer la langue du bot pour ce serveur",
                 "updatedToLanguageTitle": "La langue du bot a bien été mise à jour en {lang_name}",
                 "updatedToLanguageDesc": "Vous pouvez fermer ce message",
-                "selectNewLanguage": "Veuillez séléctionner la nouvelle langue"
+                "selectNewLanguage": "Veuillez séléctionner la nouvelle langue",
+                "errors": {
+                    "thresholdNeededDescription": "Lorsque qu'un dé unique à 20 faces est lancé, vous devez préciser un seuil.",
+                    "thresholdNeededFooter": "Exemple: /roll <14 ou /roll 1d20<16"
+                }
             }
         }
     }

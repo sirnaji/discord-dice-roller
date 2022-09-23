@@ -11,7 +11,8 @@
         "general": {
             "guildOnlyCmd": "This command cannot be used in DMs.",
             "actionErrorTitle": "Sorry, this action encountered an error.",
-            "actionErrorDesc": "Please try again later or contact an administrator."
+            "actionErrorDesc": "Please try again later or contact an administrator.",
+            "error": "Error"
         },
         "commands": {
             "roll": {
@@ -38,7 +39,11 @@
                 "description": "Update bot language for this server",
                 "updatedToLanguageTitle": "Successfully updated bot language to {lang_name}",
                 "updatedToLanguageDesc": "You can now dismiss this message",
-                "selectNewLanguage": "Please select the desired language here"
+                "selectNewLanguage": "Please select the desired language here",
+                "errors": {
+                    "thresholdNeededDescription": "When throwing a die of 20 faces, you need to specify a threshold",
+                    "thresholdNeededFooter": "Example: /roll <14 or /roll 1d20<16"
+                }
             }
         }
     }

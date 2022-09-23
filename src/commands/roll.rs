@@ -88,7 +88,33 @@ pub async fn handler(ctx: &Context, command: &ApplicationCommandInteraction, loc
 
                             None =>
                             {
-                                embed.description(roll_value_string);
+                                if dice_size == 20
+                                {
+                                    embed.title(&locale.translations.general.error);
+                                    embed.description(
+                                        &locale
+                                            .translations
+                                            .commands
+                                            .setlang
+                                            .errors
+                                            .threshold_needed_description,
+                                    );
+                                    embed.footer(|f| {
+                                        f.text(
+                                            &locale
+                                                .translations
+                                                .commands
+                                                .setlang
+                                                .errors
+                                                .threshold_needed_footer,
+                                        )
+                                    });
+                                    embed.color(EmbedColor::ActionError as u32);
+                                }
+                                else
+                                {
+                                    embed.description(roll_value_string);
+                                }
                             }
                         }
 

@@ -40,6 +40,7 @@ pub struct General
     pub guild_only_cmd: String,
     pub action_error_title: String,
     pub action_error_desc: String,
+    pub error: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -97,4 +98,13 @@ pub struct Setlang
     pub updated_to_language_title: String,
     pub updated_to_language_desc: String,
     pub select_new_language: String,
+    pub errors: SetlangErrors,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct SetlangErrors
+{
+    pub threshold_needed_description: String,
+    pub threshold_needed_footer: String,
 }
