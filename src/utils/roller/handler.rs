@@ -1,3 +1,5 @@
+use crate::utils::i18n::locale::Locale;
+
 use super::parser;
 use super::random;
 
@@ -18,9 +20,9 @@ impl Threshold
         match self
         {
             Threshold::CriticalSuccess => ":blue_circle:".to_string(),
-            Threshold::CriticalFailure => ":purple_circle:".to_string(),
+            Threshold::CriticalFailure => ":red_circle:".to_string(),
             Threshold::Success => ":green_circle:".to_string(),
-            Threshold::Failure => ":red_circle:".to_string(),
+            Threshold::Failure => ":yellow_circle:".to_string(),
             _ => "".to_string(),
         }
     }
@@ -37,14 +39,22 @@ impl Threshold
         }
     }
 
-    pub fn get_text(&self) -> String
+    pub fn get_text(&self, locale: &Locale) -> String
     {
         match self
         {
-            Threshold::CriticalSuccess => "CRITICAL HIT!".to_string(),
-            Threshold::CriticalFailure => "CRITICAL FAILURE!".to_string(),
-            Threshold::Success => "Success".to_string(),
-            Threshold::Failure => "Failure".to_string(),
+            Threshold::CriticalSuccess => {
+                locale.translations.commands.roll.threshold.critical_success.clone()
+            },
+            Threshold::CriticalFailure => {
+                locale.translations.commands.roll.threshold.critical_failure.clone()
+            },
+            Threshold::Success => {
+                locale.translations.commands.roll.threshold.success.clone()
+            },
+            Threshold::Failure => {
+                locale.translations.commands.roll.threshold.failure.clone()
+            },
             _ => "".to_string(),
         }
     }
@@ -54,9 +64,9 @@ impl Threshold
         match self
         {
             Threshold::CriticalSuccess => 0x55ACEE,
-            Threshold::CriticalFailure => 0xAA8ED6,
+            Threshold::CriticalFailure => 0xDD2E44,
             Threshold::Success => 0x78B159,
-            Threshold::Failure => 0xDD2E44,
+            Threshold::Failure => 0xFF9800,
             _ => 0x2F3136,
         }
     }

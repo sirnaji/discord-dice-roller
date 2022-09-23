@@ -74,7 +74,7 @@ pub async fn handler(ctx: &Context, command: &ApplicationCommandInteraction, loc
                             Some(threshold) =>
                             {
                                 embed.field(
-                                    format!("{:?}", roll.threshold).to_uppercase(),
+                                    roll.threshold.get_text(&locale),
                                     format!(
                                         "{}⠀⠀{}/**{:?}** {}",
                                         roll.threshold.get_color_emoji(),
@@ -163,7 +163,7 @@ pub async fn handler(ctx: &Context, command: &ApplicationCommandInteraction, loc
                                         roll_value_string,
                                         roll_threshold_string,
                                         roll.threshold.get_emote_emoji(),
-                                        roll.threshold.get_text(),
+                                        roll.threshold.get_text(&locale),
                                     );
 
                                     if roll.threshold == Threshold::Success
