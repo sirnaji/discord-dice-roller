@@ -13,5 +13,10 @@ Cargo.lock
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
 
+# environment data, which may contain confidential information that should not be pushed onto the repo
 .env
-sqlite.db
+
+# sqlite database files
+**/*.db
+**/*.db-shm
+**/*.db-wal
