@@ -151,7 +151,7 @@ pub fn handle_roll(
                         {
                             if dice_size == 20
                             {
-                                if *raw_roll < threshold
+                                if *raw_roll <= threshold
                                 {
                                     Threshold::Success
                                 }
@@ -168,7 +168,7 @@ pub fn handle_roll(
                                     Threshold::Failure
                                 }
                             }
-                            else if *raw_roll < threshold
+                            else if *raw_roll <= threshold
                             {
                                 Threshold::Success
                             }
