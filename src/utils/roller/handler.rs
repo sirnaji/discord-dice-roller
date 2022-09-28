@@ -43,18 +43,22 @@ impl Threshold
     {
         match self
         {
-            Threshold::CriticalSuccess => {
-                locale.translations.commands.roll.threshold.critical_success.clone()
-            },
-            Threshold::CriticalFailure => {
-                locale.translations.commands.roll.threshold.critical_failure.clone()
-            },
-            Threshold::Success => {
-                locale.translations.commands.roll.threshold.success.clone()
-            },
-            Threshold::Failure => {
-                locale.translations.commands.roll.threshold.failure.clone()
-            },
+            Threshold::CriticalSuccess => locale
+                .translations
+                .commands
+                .roll
+                .threshold
+                .critical_success
+                .clone(),
+            Threshold::CriticalFailure => locale
+                .translations
+                .commands
+                .roll
+                .threshold
+                .critical_failure
+                .clone(),
+            Threshold::Success => locale.translations.commands.roll.threshold.success.clone(),
+            Threshold::Failure => locale.translations.commands.roll.threshold.failure.clone(),
             _ => "".to_string(),
         }
     }
@@ -144,39 +148,71 @@ pub fn handle_roll(
             let rolls: Vec<Roll> = raw_rolls
                 .iter()
                 .map(|raw_roll| Roll {
-                    value: *raw_roll,
+                    value: raw_roll.clone(),
                     threshold: match threshold_value
                     {
                         Some(threshold) =>
                         {
+                            // If die is 20-sided
                             if dice_size == 20
+                            {
+                                // 20 is always a critical failure
+                                if *raw_roll == 20
+                                {
+                                    Threshold::CriticalFailure
+                                }
+                                else
+                                {
+                                    // When the threshold is greater than 20,
+                                    // the critical success levels are calculated
+                                    if threshold > 20
+                                    {
+                                        let critical_threshold = threshold - 20;
+
+                                        // If roll value is in the critical threshold range,
+                                        // Its a critical success
+                                        if *raw_roll <= critical_threshold
+                                        {
+                                            Threshold::CriticalSuccess
+                                        }
+                                        else
+                                        {
+                                            Threshold::Success
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Critical Success if roll value equals to threshold
+                                        if *raw_roll == threshold
+                                        {
+                                            Threshold::CriticalSuccess
+                                        }
+                                        // Success if roll value less or equals to threshold
+                                        else if *raw_roll <= threshold
+                                        {
+                                            Threshold::Success
+                                        }
+                                        // Failure
+                                        else
+                                        {
+                                            Threshold::Failure
+                                        }
+                                    }
+                                }
+                            }
+                            else
                             {
                                 if *raw_roll <= threshold
                                 {
                                     Threshold::Success
-                                }
-                                else if *raw_roll == threshold
-                                {
-                                    Threshold::CriticalSuccess
-                                }
-                                else if *raw_roll == 20
-                                {
-                                    Threshold::CriticalFailure
                                 }
                                 else
                                 {
                                     Threshold::Failure
                                 }
                             }
-                            else if *raw_roll <= threshold
-                            {
-                                Threshold::Success
-                            }
-                            else
-                            {
-                                Threshold::Failure
-                            }
                         }
+
                         None => Threshold::None,
                     },
                 })
