@@ -1,7 +1,7 @@
 use super::Handler;
 use crate::commands::{roll, setlang};
-use crate::utils::db;
 use crate::utils::enums::EmbedColor;
+use crate::utils::i18n::{get_command_locale, CommandGuildId};
 use serenity::builder::CreateEmbed;
 use serenity::model::prelude::interaction::application_command::ApplicationCommandInteraction;
 use serenity::model::prelude::interaction::{Interaction, InteractionResponseType};
@@ -15,26 +15,16 @@ impl Handler
         {
             let locale = if let Some(guild_id) = command.guild_id
             {
-                if let Some(guild) = db::try_get_server(*guild_id.as_u64()).await
-                {
-                    let guild_lang_code = guild.language;
-                    self.get_locale(&guild_lang_code).unwrap()
-                }
-                else
-                {
-                    let lang_code = &self.default_locale;
-                    self.get_locale(lang_code).unwrap()
-                }
+                get_command_locale(CommandGuildId::Is(*guild_id.as_u64())).await.unwrap()
             }
             else
             {
-                let lang_code = self.default_locale.clone();
-                self.get_locale(&lang_code).unwrap()
+                get_command_locale(CommandGuildId::None).await.unwrap()
             };
 
             match command.data.name.as_str()
             {
-                "roll" => roll::handler(&ctx, &command, locale).await,
+                "roll" => roll::as_interaction_handler(&ctx, &command, locale).await,
                 "setlang" => setlang::handler(&ctx, &command, locale).await,
 
                 // In case other slash commands are added later
@@ -42,8 +32,8 @@ impl Handler
                 _ =>
                 {
                     let embed = CreateEmbed::default()
-                        .title("Roll")
-                        .description("This command have yet to be implemented.")
+                        .title("Error while processing this interaction.")
+                        .description("It could be that the idiot developer who takes care of this bot forgot to implement this interaction. Tell them to check their code.")
                         .color(EmbedColor::ActionBase as u32)
                         .to_owned();
 

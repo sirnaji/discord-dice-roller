@@ -18,8 +18,11 @@ async fn main()
     // DB stuff
     init_database().await;
 
+    // Prepare Gateway Intents
+    let gateway_intents = GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT;
+
     // Create a new Client and run it.
-    let mut client = Client::builder(&token, GatewayIntents::empty())
+    let mut client = Client::builder(&token, gateway_intents)
         .event_handler(Handler {
             available_locales: get_available_locales(),
             default_locale: "en-US".to_string(),
