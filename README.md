@@ -13,8 +13,8 @@ __Here are some examples with the behavior you can expect:__
 
 **Threshold system:** *Can be added optionally*
 
-- `/roll <4` will throw one die of 20 faces, with a success rate that must be below 4.
-- `/roll 7d6<3` will throw 7 dice of 6 faces. If a die value is below 3, the throw is a success.   
+- `/roll <4` will throw one die of 20 faces, with a success rate that must be less or equal to 4.
+- `/roll 7d6<3` will throw 7 dice of 6 faces. If a die value is less or equal 3, the throw is a success.   
 When throwing multiple dice, the bot's answer will show how many rolls were successful out of the total number of rolls.
 
 ## How to run
