@@ -22,7 +22,7 @@ When throwing multiple dice, the bot's answer will show how many rolls were succ
 - Add an `.env` file to the root where the project will run with the following content :
 ```
 TOKEN="your_discord_token_here"
-DATABASE_URL="sqlite:://sqlite_file_path"
+DATABASE_URL="file_name.db"
 ```
 To get a bot token, check the [discord developers documentation](https://discord.com/developers/applications/) for more help
 
